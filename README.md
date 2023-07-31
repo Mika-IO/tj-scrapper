@@ -14,13 +14,14 @@ Criar uma API que busque dados de um processo em todos os graus dos Tribunais de
     1º grau - https://www2.tjal.jus.br/cpopg/open.do
     2º grau - https://www2.tjal.jus.br/cposg5/open.do
 
-    0710802-55.2018.8.02.0001 - para mais números de processos: https://www.jusbrasil.com.br/diarios/DJAL/
+0710802-55.2018.8.02.0001 - para mais números de processos: https://www.jusbrasil.com.br/diarios/DJAL/
 
 #### TJCE
+
     1º grau - https://esaj.tjce.jus.br/cpopg/open.do
     2º grau - https://esaj.tjce.jus.br/cposg5/open.do
 
-    0070337-91.2008.8.06.0001 - para mais números de processo: https://www.jusbrasil.com.br/diarios/DJCE/
+0070337-91.2008.8.06.0001 - para mais números de processo: https://www.jusbrasil.com.br/diarios/DJCE/
 
 ## APIs
 
@@ -28,26 +29,31 @@ Criar uma API que busque dados de um processo em todos os graus dos Tribunais de
 
 input:
 
+
+```json
 {
     "process_id": "0710802-55.2018.8.02.0001"
 }
+```
 
 output:
-
+```json
 {
     "report_id":"879358de-413a-4248-8dcf-6614cd1febc1",
     "process_number":"0710802-55.2018.8.02.0001"
 }
+```
 
 
 ### GET report/
 
 input:
-
+```json
     report/879358de-413a-4248-8dcf-6614cd1febc1
-
+```
 output
 
+```json
 {
     "report_id": "0710802-55.2018.8.02.0001",
     "created_at": "2023-07-28T11:22:31Z",
@@ -91,3 +97,5 @@ output
     }
 
 }
+
+```
