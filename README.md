@@ -2,6 +2,24 @@
 
 Scrapper TJAL e TJCE
 
+## Execute o projeto localmente
+
+É necessário ter o docker instalado.
+
+### Comandos
+
+    make run
+
+or
+
+    docker build -t app-image .
+    docker run --name app -p 80:80 app-image
+
+    # to stop container
+
+    docker stop app || true
+	docker rm app || true
+
 ## Desafio
 
 Criar uma API que busque dados de um processo em todos os graus dos Tribunais de Justiça de Alagoas (TJAL) e do Ceará (TJCE). Geralmente o processo começa no primeiro grau e pode subir para o segundo. Você deve buscar o processo em todos os graus e retornar suas informações.

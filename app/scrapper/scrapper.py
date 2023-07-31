@@ -133,7 +133,6 @@ def report(url: str) -> dict:
     report["process_date"] = get_text(url, soup, "dataHoraDistribuicaoProcesso")[:10]
     report["process_judge"] = get_text(url, soup, "juizProcesso")
     report["process_value"] = get_text(url, soup, "valorAcaoProcesso")
-
     report["process_parts"] = get_parts(soup, "tablePartesPrincipais")
     report["process_moves"] = get_moves(soup, "tabelaTodasMovimentacoes")
 

@@ -1,5 +1,10 @@
-from poc.scrapper import first_level_url, second_level_url, has_second_level, report
-from poc.const import AL_BASE_URL, AL_FIRST_LEVEL_URL, AL_SECOND_LEVEL_URL
+from scrapper.scrapper import (
+    first_level_url,
+    second_level_url,
+    has_second_level,
+    report,
+)
+from scrapper.const import AL_BASE_URL, AL_FIRST_LEVEL_URL, AL_SECOND_LEVEL_URL
 import json
 import time
 
