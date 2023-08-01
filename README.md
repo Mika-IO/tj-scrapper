@@ -6,19 +6,15 @@ Scrapper TJAL e TJCE
 
 É necessário ter o docker instalado.
 
-### Comandos
+### Dependências
 
+    Python3
+    Docker
+
+### Comandos para executar o projeto
+
+    make install
     make run
-
-or
-
-    docker build -t app-image .
-    docker run --name app -p 80:80 app-image
-
-    # to stop container
-
-    docker stop app || true
-	docker rm app || true
 
 ## Desafio
 
@@ -50,7 +46,7 @@ input:
 
 ```json
 {
-    "process_id": "0710802-55.2018.8.02.0001"
+    "process_number": "0710802-55.2018.8.02.0001"
 }
 ```
 
@@ -73,11 +69,11 @@ output
 
 ```json
 {
-    "report_id": "0710802-55.2018.8.02.0001",
-    "created_at": "2023-07-28T11:22:31Z",
-    "updated_at": "2023-07-28T12:34:56Z",
-    "status": "processed",
     "report": {
+        "id": "0710802-55.2018.8.02.0001",
+        "created_at": "2023-07-28T11:22:31Z",
+        "updated_at": "2023-07-28T12:34:56Z",
+        "status": "processed",
         "level_one": {            
             "process_number": "",
             "class": "Ação Civil Pública",
@@ -97,7 +93,7 @@ output
                 }
             ]
         },
-        "level_one": {            
+        "level_two": {            
             "process_number": "",
             "class": "",
             "area": "",
@@ -111,9 +107,20 @@ output
             },
             "moves": []
         },
-        ""
     }
-
 }
 
 ```
+
+## TODO
+
+- [X] Planning Solution
+- [X] Scrapper Pages
+- [X] Database
+- [ ] Unittests
+- [ ] Refactoring
+
+
+fix:
+- [ ] Differences between classNames
+- [ ] Observability
