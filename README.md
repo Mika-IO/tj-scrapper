@@ -4,7 +4,7 @@ Scrapper TJAL e TJCE
 
 ## Execute o projeto localmente
 
-É necessário ter o docker e o Python instalado.
+É necessário ter o Docker e o Python3 instalado.
 
 ### Dependências
 
