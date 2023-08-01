@@ -1,4 +1,4 @@
-from scrapper_tjal import validate_process_number
+from scrapper.scrapper import validate_process_number
 import unittest
 
 

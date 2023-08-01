@@ -1,22 +1,21 @@
-"""
-    VALIDATE process number DONE
-    FIRST level DONE
-        GET entire page of the process DONE
-        PARSE data from page DONE
-    SECOND level
-        Exist in second level 
-            GET entire page of the process DONE
-            PARSE data from page DONE
-
-    TODO
-    fix: DIFERENCES BETWHEEN TJCE AND TJAL
-    process in parallel
-"""
-
 import requests
 import re
 import time
 from bs4 import BeautifulSoup
+import uuid
+
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+
+def is_valid_uuid(uuid_str):
+    try:
+        uuid_obj = uuid.UUID(uuid_str)
+        return True
+    except ValueError:
+        return False
 
 
 def validate_process_number(process_number: str) -> bool:
@@ -53,17 +52,16 @@ def has_second_level(base_url, process_number: str) -> tuple:
         has = True
     else:
         process_code = ""
-        print(url)
         has = False
     return has, process_code
 
 
 def get_soup(url: str) -> BeautifulSoup:
     start = time.time()
-    page = requests.get(url)
+    page = requests.get(url, verify=False)
     soup = BeautifulSoup(page.content, "html.parser")
     end = time.time()
-    print("execution_time: {:.6f} segundos".format(end - start))
+    logger.info("INFO: execution_time: {:.6f} segundos".format(end - start))
     return soup
 
 
@@ -72,7 +70,7 @@ def get_text(url, soup: BeautifulSoup, tag_id: str) -> str:
     if tag:
         return tag.text.strip().replace("  ", "")
     else:
-        print(tag_id)
+        logger.error(f"ERROR: error to get text {tag_id}")
         return ""
 
 
@@ -121,7 +119,7 @@ def get_moves(soup: BeautifulSoup, tag_id: str) -> list:
     return moves
 
 
-def report(url: str) -> dict:
+def report(url: str, tj: str) -> dict:
     soup = get_soup(url)
 
     report = {}
@@ -133,7 +131,6 @@ def report(url: str) -> dict:
     report["process_date"] = get_text(url, soup, "dataHoraDistribuicaoProcesso")[:10]
     report["process_judge"] = get_text(url, soup, "juizProcesso")
     report["process_value"] = get_text(url, soup, "valorAcaoProcesso")
-
     report["process_parts"] = get_parts(soup, "tablePartesPrincipais")
     report["process_moves"] = get_moves(soup, "tabelaTodasMovimentacoes")
 

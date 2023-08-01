@@ -2,6 +2,20 @@
 
 Scrapper TJAL e TJCE
 
+## Execute o projeto localmente
+
+É necessário ter o docker instalado.
+
+### Dependências
+
+    Python3
+    Docker
+
+### Comandos para executar o projeto
+
+    make install
+    make run
+
 ## Desafio
 
 Criar uma API que busque dados de um processo em todos os graus dos Tribunais de Justiça de Alagoas (TJAL) e do Ceará (TJCE). Geralmente o processo começa no primeiro grau e pode subir para o segundo. Você deve buscar o processo em todos os graus e retornar suas informações.
@@ -32,7 +46,7 @@ input:
 
 ```json
 {
-    "process_id": "0710802-55.2018.8.02.0001"
+    "process_number": "0710802-55.2018.8.02.0001"
 }
 ```
 
@@ -55,11 +69,11 @@ output
 
 ```json
 {
-    "report_id": "0710802-55.2018.8.02.0001",
-    "created_at": "2023-07-28T11:22:31Z",
-    "updated_at": "2023-07-28T12:34:56Z",
-    "status": "processed",
     "report": {
+        "id": "0710802-55.2018.8.02.0001",
+        "created_at": "2023-07-28T11:22:31Z",
+        "updated_at": "2023-07-28T12:34:56Z",
+        "status": "processed",
         "level_one": {            
             "process_number": "",
             "class": "Ação Civil Pública",
@@ -79,7 +93,7 @@ output
                 }
             ]
         },
-        "level_one": {            
+        "level_two": {            
             "process_number": "",
             "class": "",
             "area": "",
@@ -93,9 +107,20 @@ output
             },
             "moves": []
         },
-        ""
     }
-
 }
 
 ```
+
+## TODO
+
+- [X] Planning Solution
+- [X] Scrapper Pages
+- [X] Database
+- [ ] Unittests
+- [ ] Refactoring
+
+
+fix:
+- [ ] Differences between classNames
+- [ ] Observability
