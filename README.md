@@ -11,6 +11,10 @@ Scrapper TJAL e TJCE
     Python3
     Docker
 
+### Executar testes unitários
+
+    make run-tests
+
 ### Comandos para executar o projeto
 
     make install
@@ -70,46 +74,50 @@ output
 ```json
 {
     "report": {
-        "id": "0710802-55.2018.8.02.0001",
-        "created_at": "2023-07-28T11:22:31Z",
-        "updated_at": "2023-07-28T12:34:56Z",
-        "status": "processed",
-        "level_one": {            
-            "process_number": "",
-            "class": "Ação Civil Pública",
-            "area": "Direito Ambiental",
-            "subject": "Desmatamento ilegal",
-            "distribution_date": "2023-07-28",
-            "judge": "Dr. João da Silva",
-            "value": 100000.00,
-            "parts": {
-                "author": "",
-                "defendant": ""
-            },
-            "moves": [
+        "process_number": "0710802-55.2018.8.02.0001",
+        "status": "complete",
+        "created_at": "2023-08-02T01:41:57.257020",
+        "updated_at": "2023-08-02T01:41:57.260956",
+        "first_level": {
+            "process_number": "0710802-55.2018.8.02.0001",
+            "process_class": "Procedimento Comum Cível",
+            "process_area": "Cível",
+            "process_subject": "Dano Material",
+            "process_date": "02/05/2018",
+            "process_judge": "José Cícero Alves da Silva",
+            "process_value": "R$ 281.178,42",
+            "process_parts": [
                 {
-                    "date": "2023-07-28",
-                    "move": "Alguma coisa"
+                    "part": "Autor",
+                    "name": "José Carlos Cerqueira Souza FilhoAdvogado:Vinicius Faria de Cerqueira",
+                    "lawyers": [
+                        "Vinicius Faria de Cerqueira"
+                    ]
+                },
+                {
+                    "part": "Ré",
+                    "name": "Cony Engenharia Ltda.Advogado:Carlos Henrique de Mendonça BrandãoAdvogado:Guilherme Freire FurtadoAdvogada:Maria Eugênia Barreiros de MelloAdvogado:Vítor Reis de Araujo Carvalho",
+                    "lawyers": [
+                        "Carlos Henrique de Mendonça Brandão",
+                        "Guilherme Freire Furtado",
+                        "Maria Eugênia Barreiros de Mello",
+                        "Vítor Reis de Araujo Carvalho"
+                    ]
+                }
+            ],
+            "process_moves": [
+                {
+                    "date": "21/07/2023",
+                    "description": "Ato Publicado Relação: 0450/2023 Data da Publicação: 24/07/2023 Número do Diário: 3349"
+                },
+                {
+                    "date": "20/07/2023",
+                    "description": "Ato ordinatório praticado Autos n°: 0710802-55.2018.8.02.0001 Ação: Procedimento Comum Cível Autor: José Carlos Cerqueira Souza Filho e outro Réu: Cony Engenharia Ltda. e outro ATO ORDINATÓRIO Em cumprimento ao disposto no Provimento nº 15/2019, da Corregedoria Geral da Justiça do Estado de Alagoas, fica(m) a(s) parte(s) ré intimada(s), na pessoa do seu advogado, para, no prazo de 15 (quinze) dias, providenciar(em) o recolhimento das custas processuais, sob pena de expedição de certidão ao FUNJURIS (Resolução TJ/AL nº 19/2007) para inscrição na divida ativa estadual, após o que será arquivado o processo. Ocorrendo o pagamento, devidamente atualizado, após a emissão da supracitada certidão de débito, deverá o interessado entregar a ficha de compensação bancária quitada na sede do FUNJURIS, que se responsabilizará pela devida baixa, além de oficiar à secretaria de onde se originou o débito acerca do referido pagamento (Resolução nº 19/2007, art. 33, § 6º). Maceió, 20 de julho de 2023 Marcelo Rodrigo Falcão Vieira Analista(escrivão substituto)Vencimento: 10/08/2023"
                 }
             ]
-        },
-        "level_two": {            
-            "process_number": "",
-            "class": "",
-            "area": "",
-            "subject": "",
-            "distribution_date": "",
-            "judge": "",
-            "value": null,
-            "parts": {
-                "author": "",
-                "defendant": ""
-            },
-            "moves": []
-        },
+        }
     }
 }
-
 ```
 
 ## TODO
@@ -117,10 +125,6 @@ output
 - [X] Planning Solution
 - [X] Scrapper Pages
 - [X] Database
-- [ ] Unittests
-- [ ] Refactoring
-
-
-fix:
-- [ ] Differences between classNames
-- [ ] Observability
+- [+-] Unittests
+- [-] Refactoring
+- [+-] Observability
