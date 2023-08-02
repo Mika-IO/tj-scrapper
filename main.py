@@ -1,8 +1,8 @@
-from fastapi import FastAPI, BackgroundTasks, Request
+from fastapi import FastAPI, BackgroundTasks, Request, HTTPException
 import uuid
 import datetime
 
-from app.scrapper.utils import validate_process_number
+from app.scrapper.utils import validate_process_number, is_valid_uuid
 from app.report_by_tj import tj_report
 
 from app.dao import dao_report
@@ -15,23 +15,25 @@ async def create_report(request: Request, background_tasks: BackgroundTasks):
     body = await request.json()
 
     if not body:
-        return {"error": "body is missing"}
+        raise HTTPException(status_code=400, detail="body is missing")
 
     process_number = body.get("process_number")
 
     if not process_number:
-        return {"error": "process_number is missing"}
+        raise HTTPException(status_code=400, detail="process_number is missing")
 
     if not validate_process_number(process_number):
-        return {"error": "invalid process_number"}
+        raise HTTPException(status_code=422, detail="invalid process_number")
 
     tj = body.get("tj")
 
     if not tj:
-        return {"error": "tj is missing"}
+        raise HTTPException(status_code=400, detail="tj is missing")
 
     if not tj in ["ce", "al"]:
-        return {"error": "invalid tj"}
+        raise HTTPException(status_code=400, detail="invalid tj")
+
+
     report = dao_report.get_report_by_process_number(process_number)
     if report:
         return {"process_number": process_number, "report_id": report["id"]}
@@ -55,7 +57,10 @@ async def create_report(request: Request, background_tasks: BackgroundTasks):
 
 @app.get("/report/{report_id}")
 def get_report(report_id):
+    if not is_valid_uuid(report_id):
+        raise HTTPException(status_code=400, detail="invalid report")
     report = dao_report.get_report(report_id)
     if not report:
-        return {"error": "report not found"}
+        raise HTTPException(status_code=404, detail="report not found")
     return {"report": report}
+

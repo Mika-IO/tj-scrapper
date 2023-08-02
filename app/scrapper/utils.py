@@ -1,16 +1,15 @@
 import requests
+from bs4 import BeautifulSoup
 import re
 import time
-from bs4 import BeautifulSoup
 import uuid
-
 import logging
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def is_valid_uuid(uuid_str):
+def is_valid_uuid(uuid_str: str) -> bool:
     try:
         uuid_obj = uuid.UUID(uuid_str)
         return True
@@ -24,15 +23,15 @@ def validate_process_number(process_number: str) -> bool:
     return bool(is_valid)
 
 
-def first_level_url(base_url, process_number: str) -> str:
+def first_level_url(base_url: str, process_number: str) -> str:
     return f"{base_url}?processo.numero={process_number}"
 
 
-def second_level_url(base_url, process_code: str) -> str:
+def second_level_url(base_url: str, process_code: str) -> str:
     return f"{base_url}?processo.codigo={process_code}"
 
 
-def has_second_level(base_url, process_number: str) -> tuple:
+def has_second_level(base_url: str, process_number: str) -> tuple:
     url = (
         f"https://{base_url}cposg5/search.do?"
         + "conversationId="
@@ -70,11 +69,12 @@ def get_text(url, soup: BeautifulSoup, tag_id: str) -> str:
     if tag:
         return tag.text.strip().replace("  ", "")
     else:
-        logger.error(f"ERROR: error to get text {tag_id}")
+        print(f"ERROR: error to get text {tag_id} in url: {url}")
         return ""
 
 
-def get_parts(soup: BeautifulSoup, tag_id: str) -> list:
+def get_parts(soup: BeautifulSoup, tag_id: str, lawyers=False) -> list:
+
     tag = soup.find(id=tag_id)
     trs = tag.find_all("tr", class_="fundoClaro")
     parts = []
@@ -85,22 +85,23 @@ def get_parts(soup: BeautifulSoup, tag_id: str) -> list:
         name_tag = tr.find("td", class_="nomeParteEAdvogado")
         name = name_tag.get_text(strip=True) if name_tag else None
 
-        lawyers = []
-        lawyer_tags = name_tag.find_all("span", class_="mensagemExibindo")
-        for lawyer_tag in lawyer_tags:
-            if lawyer_tag.next_sibling:
-                lawyer = lawyer_tag.next_sibling.strip()
-                lawyers.append(lawyer)
-                name = name.replace(f"Advogado:{lawyer}", "")
-                name = name.replace(f"Advogada:{lawyer}", "")
-
-        parts.append(
-            {
+        part = {
                 "part": part,
-                "name": name,
-                "lawyers": lawyers,
+                "name": name
             }
-        )
+        if lawyers:
+            lawyers = []
+            lawyer_tags = name_tag.find_all("span", class_="mensagemExibindo")
+            for lawyer_tag in lawyer_tags:
+                if lawyer_tag.next_sibling:
+                    lawyer = lawyer_tag.next_sibling.strip()
+                    lawyers.append(lawyer)
+                    name = name.replace(f"Advogado:{lawyer}", "")
+                    name = name.replace(f"Advogada:{lawyer}", "")
+
+            part["lawyers"] = lawyers
+        parts.append(part)
+        
     return parts
 
 
@@ -128,10 +129,20 @@ def report(url: str, tj: str) -> dict:
     report["process_class"] = get_text(url, soup, "classeProcesso")
     report["process_area"] = get_text(url, soup, "areaProcesso")
     report["process_subject"] = get_text(url, soup, "assuntoProcesso")
+
     report["process_date"] = get_text(url, soup, "dataHoraDistribuicaoProcesso")[:10]
-    report["process_judge"] = get_text(url, soup, "juizProcesso")
-    report["process_value"] = get_text(url, soup, "valorAcaoProcesso")
-    report["process_parts"] = get_parts(soup, "tablePartesPrincipais")
+
+    match tj:
+        case "ce":
+            report["process_parts"] = get_parts(soup, "tablePartesPrincipais")
+            # TODO encontrar juiz e valor na pagina de processo no TJCE
+            # Ao que parece esses dados nao estao na pagina
+
+        case "al":
+            report["process_judge"] = get_text(url, soup, "juizProcesso")
+            report["process_value"] = get_text(url, soup, "valorAcaoProcesso")
+            report["process_parts"] = get_parts(soup, "tablePartesPrincipais", lawyers=True)
+
     report["process_moves"] = get_moves(soup, "tabelaTodasMovimentacoes")
 
     return report

@@ -31,11 +31,11 @@ def tj_report(process_number, report_id, tj):
     url = first_level_url(FIRST_LEVEL_URL, process_number)
     first_data = report(url, tj)
 
-    data["primeiro_grau"] = first_data
+    data["first_level"] = first_data
     second_level, process_code = has_second_level(BASE_URL, process_number)
     if second_level:
         url = second_level_url(SECOND_LEVEL_URL, process_code)
         second_data = report(url, tj)
-        data["segundo_grau"] = second_data
+        data["second_level"] = second_data
 
     dao_report.update_report(report_id, data)
