@@ -20,6 +20,10 @@ Scrapper TJAL e TJCE
     make install
     make run
 
+### API Docs
+
+    http://localhost/docs
+
 ## Desafio
 
 Criar uma API que busque dados de um processo em todos os graus dos Tribunais de Justiça de Alagoas (TJAL) e do Ceará (TJCE). Geralmente o processo começa no primeiro grau e pode subir para o segundo. Você deve buscar o processo em todos os graus e retornar suas informações.
